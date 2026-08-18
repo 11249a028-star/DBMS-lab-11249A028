@@ -1,0 +1,266 @@
+
+
+SQL> DESC COURSE001;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                           NUMBER(38)
+ COURSENAME                                         CHAR(50)
+
+SQL> DESC STUDENT01;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTNAME                                        CHAR(50)
+ STUDENTID                                          NUMBER(38)
+
+SQL> SELECT *
+  2  FROM STUDENT01
+  3  CROSS JOIN COURSE001;
+
+no rows selected
+
+SQL> INSERT INTO STUDENT01 VALUES('BHAVNA',28);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT01 VALUES('MOHITH',18);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT01 VALUES('PRANAVI',22);
+
+1 row created.
+
+SQL> INSERT INTO COURSE001 VALUES(101,'SQL');
+
+1 row created.
+
+SQL> INSERT INTO COURSE001 VALUES(102,'PYTHON');
+
+1 row created.
+
+SQL> INSERT INTO COURSE001 VALUES(103,'EXCEL');
+
+1 row created.
+
+SQL> DESC COURSE001;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                           NUMBER(38)
+ COURSENAME                                         CHAR(50)
+
+SQL> SELECT * FROM COURSE001;
+
+  COURSEID COURSENAME
+---------- --------------------------------------------------
+       101 SQL
+       102 PYTHON
+       103 EXCEL
+
+SQL> SELECT * FROM STUDENT01;
+
+STUDENTNAME                                         STUDENTID
+-------------------------------------------------- ----------
+BHAVNA                                                     28
+MOHITH                                                     18
+PRANAVI                                                    22
+
+SQL> SELECT * FROM STUDENT01
+  2  CROSS JOIN COURSE001;
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+BHAVNA                                                     28        101
+SQL
+
+BHAVNA                                                     28        102
+PYTHON
+
+BHAVNA                                                     28        103
+EXCEL
+
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+MOHITH                                                     18        101
+SQL
+
+MOHITH                                                     18        102
+PYTHON
+
+MOHITH                                                     18        103
+EXCEL
+
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+PRANAVI                                                    22        101
+SQL
+
+PRANAVI                                                    22        102
+PYTHON
+
+PRANAVI                                                    22        103
+EXCEL
+
+
+9 rows selected.
+
+SQL> INSERT INTO STUDENT01('SAM',101);
+INSERT INTO STUDENT01('SAM',101)
+                      *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> INSERT INTO STUDENT01 VALUES('SAM',101);
+
+1 row created.
+
+SQL> INSERT INTO COURSE001 VALUES(101, 'SQL');
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT01;
+
+STUDENTNAME                                         STUDENTID
+-------------------------------------------------- ----------
+BHAVNA                                                     28
+MOHITH                                                     18
+PRANAVI                                                    22
+SAM                                                       101
+
+SQL> INSERT INTO STUDENT01('NOBI',28);
+INSERT INTO STUDENT01('NOBI',28)
+                      *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> INSERT INTO STUDENT01 VALUES('NOBI',28);
+
+1 row created.
+
+SQL> INSERT INTO COURSE001 VALUES(101,'SQL');
+
+1 row created.
+
+
+SQL> DESC STUDENT01;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENTNAME                                        CHAR(50)
+ STUDENTID                                          NUMBER(38)
+
+SQL> SELECT * FROM STUDENT01;
+
+STUDENTNAME                                         STUDENTID
+-------------------------------------------------- ----------
+BHAVNA                                                     28
+MOHITH                                                     18
+PRANAVI                                                    22
+SAM                                                       101
+NOBI                                                       28
+
+SQL> SELECT * FROM COURSE001;
+
+  COURSEID COURSENAME
+---------- --------------------------------------------------
+       101 SQL
+       102 PYTHON
+       103 EXCEL
+       101 SQL
+       101 SQL
+
+SQL> SELECT S.STUDENTNAME,
+  2         S.STUDENTID,
+  3         C.COURSEID,
+  4         C.COURSENAME
+  5  FROM STUDENT01 S
+  6  JOIN COURSE001 C
+  7  ON S.STUDENTID = C.COURSEID;
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+SAM                                                       101        101
+SQL
+
+SAM                                                       101        101
+SQL
+
+SAM                                                       101        101
+SQL
+
+
+SQL> SELECT S1.STUDENTNAME AS STUDENT1,
+  2         S2.STUDENTNAME AS STUDENT2,
+  3         S1.STUDENTID
+  4  FROM STUDENT01 S1
+  5  JOIN STUDENT01 S2
+  6  ON S1.STUDENTID = S2.STUDENTID
+  7  AND S1.STUDENTNAME <> S2.STUDENTNAME;
+
+STUDENT1
+--------------------------------------------------
+STUDENT2                                            STUDENTID
+-------------------------------------------------- ----------
+NOBI
+BHAVNA                                                     28
+
+BHAVNA
+NOBI                                                       28
+
+
+SQL> SELECT S.STUDENTNAME,
+  2         S.STUDENTID,
+  3         C.COURSEID,
+  4         C.COURSENAME
+  5  FROM STUDENT01 S
+  6  LEFT OUTER JOIN COURSE001 C
+  7  ON S.STUDENTID = C.COURSEID;
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+SAM                                                       101        101
+SQL
+
+SAM                                                       101        101
+SQL
+
+SAM                                                       101        101
+SQL
+
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+MOHITH                                                     18
+
+
+NOBI                                                       28
+
+
+BHAVNA                                                     28
+
+
+
+STUDENTNAME                                         STUDENTID   COURSEID
+-------------------------------------------------- ---------- ----------
+COURSENAME
+--------------------------------------------------
+PRANAVI                                                    22
+
+
+
+7 rows selected.
+
