@@ -1,0 +1,230 @@
+
+Enter user-name: A028@db2021
+Enter password:
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> CREATE TABLE STUDENT00(STUDENTID INT,STUDENTNAME CHAR(30),MARKS INT,DEPTNAME CHAR(40));
+
+Table created.
+
+SQL> INSERT INTO STUDENT00 VALUES(28,'BHAVNA',70,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT00 VALUES(18,'MOHITH',85,'ECE');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT00 VALUES(88,'SASI',59,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT00 VALUES(34,'BEN',69,'EEE');
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT00;
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        28 BHAVNA                                 70
+CSE
+
+        18 MOHITH                                 85
+ECE
+
+        88 SASI                                   59
+CSE
+
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        34 BEN                                    69
+EEE
+
+
+SQL> CREATE TABLE ALUMNI
+  2  (
+  3   STUDENT_NAME VARCHAR2(30));
+
+Table created.
+
+SQL> INSERT INTO ALUMNI VALUES('BHAVNA');
+
+1 row created.
+
+SQL> INSERT INTO ALUMNI VALUES('MOHITH');
+
+1 row created.
+
+SQL> INSERT INTO ALUMNI VALUES('SASI');
+
+1 row created.
+SQL> SELECT * FROM STUDENT00
+  2  WHERE DEPTNAME IN('CSE','ECE');
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        28 BHAVNA                                 70
+CSE
+
+        18 MOHITH                                 85
+ECE
+
+        88 SASI                                   59
+CSE
+
+
+SQL> SELECT * FROM STUDENT
+  2  WHERE MARK > ANY (
+  3  A028@db20
+  4
+SQL> SELECT * FROM STUDENT00
+  2  WHERE MARKS > ANY (
+  3  SELECT MARKS FROM STUDENT00
+  4  WHERE DEPTNAME='ECE');
+
+no rows selected
+
+SQL> SELECT * FROM STUDENT00
+  2  WHERE MARKS > ANY (
+  3  SELECT MARKS FROM STUDENT00
+  4  WHERE DEPTNAME='CSE');
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        18 MOHITH                                 85
+ECE
+
+        28 BHAVNA                                 70
+CSE
+
+        34 BEN                                    69
+EEE
+
+SQL> SELECT STUDENTNAME FROM STUDENT00 S
+  2  WHERE EXISTS(
+  3  SELECT * FROM ALUMNI A
+  4   WHERE A.STUDENT_NAME = S.STUDENTNAME);
+
+no rows selected
+
+SQL> SELECT STUDENTNAME FROM STUDENT00 S
+  2  WHERE NOT EXISTS(
+  3  SELECT * FROM ALUMNI A
+  4   WHERE A.STUDENT_NAME = S.STUDENTNAME);
+
+STUDENTNAME
+------------------------------
+SASI
+BHAVNA
+BEN
+MOHITH
+
+SQL> SELECT STUDENTNAME FROM STUDENT00
+  2  UNION
+  3  SELECT STUDENT_NAME FROM ALUMNI;
+
+STUDENTNAME
+------------------------------
+BEN
+BHAVNA
+BHAVNA
+MOHITH
+MOHITH
+SASI
+SASI
+
+7 rows selected.
+
+SQL> SELECT STUDENTNAME FROM STUDENT00
+  2  INTERSECT
+  3  SELECT STUDENT_NAME FROM ALUMNI;
+
+no rows selected
+
+SQL> SELECT STUDENTNAME FROM STUDENT00
+  2  INTERSECT
+  3  SELECT STUDENT_NAME FROM ALUMNI;
+
+no rows selected
+
+SQL> INSERT INTO STUDENT00 VALUES(27,'LEXI',90,'EEE');
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT00;
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        28 BHAVNA                                 70
+CSE
+
+        18 MOHITH                                 85
+ECE
+
+        88 SASI                                   59
+CSE
+
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        34 BEN                                    69
+EEE
+
+        27 LEXI                                   90
+EEE
+
+
+SQL> SELECT *
+  2  FROM STUDENT
+  3  WHERE MARKS > ALL
+  4  (
+  5   SELECT MARKS
+  6   FROM STUDENT
+  7   WHERE DEPARTMENT = 'ECE'
+  8
+SQL>
+SQL> SELECT * FROM STUDENT00
+  2  WHERE MARKS > ALL (
+  3  SELECT MARKS FROM STUDENTS WHERE DEPTNAME = 'CSE');
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        28 BHAVNA                                 70
+CSE
+
+        18 MOHITH                                 85
+ECE
+
+        88 SASI                                   59
+CSE
+
+
+ STUDENTID STUDENTNAME                         MARKS
+---------- ------------------------------ ----------
+DEPTNAME
+----------------------------------------
+        34 BEN                                    69
+EEE
+
+        27 LEXI                                   90
+EEE
+
+
+SQL>
