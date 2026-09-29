@@ -1,0 +1,96 @@
+Enter user-name: A028@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - P
+CREATE TABLE DEPARTMENT20
+(
+DEPT_ID NUMBER(3),
+DEPT_NAME VARCHAR2(30),
+CONSTRAINT PK_DEPT
+
+PRIMARY KEY (DEPT_ID)
+);
+
+Table created.
+
+CREATE TABLE EMPLOYEE20
+(
+EMP_ID NUMBER(5),
+EMP_NAME VARCHAR2(30) CONSTRAINT NN_EMPNAME NOT NULL,
+EMAIL VARCHAR2(50),
+SALARY NUMBER(8),
+DEPT_ID NUMBER(3),
+CONSTRAINT PK_EMP PRIMARY KEY (EMP_ID),
+CONSTRAINT UK_EMAIL UNIQUE (EMAIL),
+CONSTRAINT CK_SALARY CHECK (SALARY >= 10000),
+CONSTRAINT FK_DEPT FOREIGN KEY (DEPT_ID)
+REFERENCES DEPARTMENT20(DEPT_ID)
+);
+
+Table created.
+
+INSERT INTO DEPARTMENT20 VALUES (101,'CSE');
+INSERT INTO DEPARTMENT20 VALUES (102,'ECE');
+
+1 row created.
+1 row created.
+
+INSERT INTO EMPLOYEE20 VALUES (1001,'ARUN','arun@gmail.com',35000,101);
+INSERT INTO EMPLOYEE20 VALUES (1002,'BALA','bala@gmail.com',30000,102);
+
+1 row created.
+1 row created.
+
+INSERT INTO EMPLOYEE20
+VALUES (1003,NULL,'divya@gmail.com',25000,101);
+
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("EMPLOYEE"."EMP_NAME")
+UNIQUE – attempt to insert a duplicate email:
+INSERT INTO EMPLOYEE20
+VALUES (1004,'KAVI','arun@gmail.com',28000,101);
+
+ERROR at line 1:
+ORA-00001: unique constraint (UK_EMAIL) violated
+CHECK – attempt to insert a salary less than 10000:
+INSERT INTO EMPLOYEE20
+VALUES (1005,'RAVI','ravi@gmail.com',8000,101);
+ERROR at line 1:
+ORA-02290: check constraint (CK_SALARY) violated
+FOREIGN KEY – attempt to insert an invalid department:
+INSERT INTO EMPLOYEE20
+VALUES (1006,'SURESH','suresh@gmail.com',25000,105);
+
+ERROR at line 1:
+ORA-02291: integrity constraint (FK_DEPT) violated
+parent key not found
+PRIMARY KEY – attempt to insert a duplicate EMP_ID:
+INSERT INTO EMPLOYEE20
+VALUES (1001,'MANOJ','manoj@gmail.com',30000,101);
+
+ERROR at line 1:
+ORA-00001: unique constraint (PK_EMP) violated
+Display Valid Records
+SELECT * FROM EMPLOYEE20;
+
+EMP_ID EMP_NAME EMAIL SALARY DEPT_ID
+------ -------- ----------------- ------ -------
+1001 ARUN arun@gmail.com 35000 101
+1002 BALA bala@gmail.com 30000 102
+Description of the Tables
+DESC DEPARTMENT20;
+
+Name Null? Type
+----------- --------- ----------------
+DEPT_ID NOT NULL NUMBER(3)
+DEPT_NAME VARCHAR2(30)
+DESC EMPLOYEE20;
+
+Name Null? Type
+---------- --------- ----------------
+EMP_ID NOT NULL NUMBER(5)
+EMP_NAME NOT NULL VARCHAR2(30)
+EMAIL VARCHAR2(50)
+SALARY NUMBER(8)
+DEPT_ID NUMBER(3)
