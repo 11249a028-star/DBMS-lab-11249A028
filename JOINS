@@ -1,4 +1,5 @@
-
+Enter user-name: A028@db2021
+Enter password:
 
 SQL> DESC COURSE001;
  Name                                      Null?    Type
